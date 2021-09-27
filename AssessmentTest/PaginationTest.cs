@@ -89,6 +89,81 @@ namespace AssessmentTest
             IPagination<string> pagination = new PaginationString(PIPE_SAMPLE, 5, provider);
             pagination.FirstPage();
             string [] expectedElements = {"a", "b", "c", "d", "e"};
+            CollectionAssert.AreEqual(expectedElements, pagination.GetVisibleItems().ToList()); 
+        }
+        
+        [TestMethod]
+        public void TestListOfNumbers()
+        {
+            IElementsProvider<string> provider = new StringProvider();
+            int[] sample = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+            IPagination<string> pagination = new PaginationString(sample.ToList(), 5, provider);
+            pagination.FirstPage();
+            string[] expectedElements = { "1", "2", "3", "4", "5" };
+            CollectionAssert.AreEqual(expectedElements, pagination.GetVisibleItems().ToList());
+        }
+        
+        [TestMethod]
+        public void TestListGoToPage()
+        {
+            IElementsProvider<string> provider = new StringProvider();
+            int[] sample = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+            IPagination<string> pagination = new PaginationString(sample.ToList(), 4, provider);
+            pagination.GoToPage(2);
+            string[] expectedElements = { "5", "6", "7", "8" };
+            CollectionAssert.AreEqual(expectedElements, pagination.GetVisibleItems().ToList());
+        }
+
+        [TestMethod]
+        public void TestListNextPage()
+        {
+            IElementsProvider<string> provider = new StringProvider();
+            int[] sample = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+            IPagination<string> pagination = new PaginationString(sample.ToList(), 5, provider);
+            pagination.NextPage();
+            string[] expectedElements = { "6", "7", "8", "9", "10" };
+            CollectionAssert.AreEqual(expectedElements, pagination.GetVisibleItems().ToList());
+        }
+        
+        [TestMethod]
+        public void TestListGetVisibleItems()
+        {
+            IElementsProvider<string> provider = new StringProvider();
+            int[] sample = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 };
+            IPagination<string> pagination = new PaginationString(sample.ToList(), 5, provider);
+            string[] expectedElements = { "1", "2", "3", "4", "5" };
+            CollectionAssert.AreEqual(expectedElements, pagination.GetVisibleItems().ToList());
+        }
+
+        [TestMethod]
+        public void TestChainableMethods()
+        {
+            IElementsProvider<string> provider = new StringProvider();
+            IPagination<string> pagination = new PaginationString(COMMA_SAMPLE, 4, provider);
+            pagination.FirstPage().LastPage().GoToPage(3).NextPage().NextPage().PrevPage();
+            string[] expectedElements = { "m", "n", "o", "p" };
+            CollectionAssert.AreEqual(expectedElements, pagination.GetVisibleItems().ToList());
+        }
+
+        [TestMethod]
+        public void TestSortAsc()
+        {
+            IElementsProvider<string> provider = new StringProvider();
+            string sample = "z,x,y,a,d,f,c,e";
+            IPagination<string> pagination = new PaginationString(sample, 4, provider);
+            pagination.SortAsc();
+            string[] expectedElements = { "a", "c", "d", "e" };
+            CollectionAssert.AreEqual(expectedElements, pagination.GetVisibleItems().ToList());
+        }
+
+        [TestMethod]
+        public void TestSortDesc()
+        {
+            IElementsProvider<string> provider = new StringProvider();
+            string sample = "z,x,y,a,d,f,c,e";
+            IPagination<string> pagination = new PaginationString(sample, 4, provider);
+            pagination.SortDesc();
+            string[] expectedElements = { "z", "y", "x", "f" };
             CollectionAssert.AreEqual(expectedElements, pagination.GetVisibleItems().ToList());
         }
 

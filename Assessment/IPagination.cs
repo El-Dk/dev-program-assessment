@@ -6,21 +6,21 @@ namespace Assessment
     {
         /// <summary>Moves cursor to the previous page. It should return an InvalidOperationException 
         /// when there is no previous page.</summary>
-        void PrevPage();
+        IPagination<string> PrevPage();
 
         /// <summary>Moves cursor to the next page. It should return an InvalidOperationException 
         /// when there is no next page.</summary>
-        void NextPage();
+        IPagination<string> NextPage();
 
         /// <summary>Moves cursor to the first page</summary>
-        void FirstPage();
+        IPagination<string> FirstPage();
 
         /// <summary>Moves cursor to the last page</summary>
-        void LastPage();
+        IPagination<string> LastPage();
 
         /// <summary>Moves cursor directly to the specified page. It should return an InvalidOperationException 
         /// when the page is not valid. Invalid values are: negative numbers, a value that exceeds the number of pages </summary>
-        void GoToPage(int page);
+        IPagination<string> GoToPage(int page);
 
         //// <summary>Returns the current page</summary>
         int CurrentPage();
@@ -30,5 +30,11 @@ namespace Assessment
 
         //// <summary>Returns the elements that are visible in the current page</summary>
         IEnumerable<T> GetVisibleItems();
+
+        // sorts the data in an Ascending way 
+        void SortAsc();
+
+        // sorts the data in an Descending way 
+        void SortDesc();
     }
 }

@@ -40,27 +40,25 @@ namespace AssessmentConsole
                 ");
             if (option == "1" || option == "2" || option == "3") 
             {
-                string separator;
-                switch(option)
+                string data = GetOption("Source data");
+                switch (option)
                 {
                     case "1":
                         {
-                            separator = ",";
+                            NavigateData(data, ",");
                             break;
                         }
                     case "2":
                         {
-                            separator = "|";
+                            NavigateData(data, "|");
                             break;
                         }
-                    default:
+                    case "3":
                         {
-                            separator = " ";
+                            NavigateData(data, " ");
                             break;
                         }
                 }
-                string data = GetOption("Source data");
-                NavigateData(data, separator);
             } 
         }
 
@@ -101,22 +99,44 @@ namespace AssessmentConsole
                         }
                     case "3":
                         {
-                            pagination.PrevPage();
+                            try 
+                            {
+                                pagination.PrevPage();
+                            }
+                            catch
+                            {
+                                Console.WriteLine("Invalid option. You are on the first page.");
+                            }
                             break;
                         }
                     case "4":
                         {
-                            pagination.LastPage();
+                            try
+                            {
+                                pagination.LastPage();
+                            }
+                            catch
+                            {
+                                Console.WriteLine("Invalid option. You are on the last page.");
+                            }
                             break;
                         }
                     case "5":
                         {
-                            pagination.GoToPage(1); //revisar
+                            int page = int.Parse(GetOption("Type the page you want to go to"));
+                            try
+                            {
+                                pagination.GoToPage(page);
+                            }
+                            catch
+                            {
+                                Console.WriteLine("Invalid page number.");
+                            }
                             break;
                         }
-                    case "6":
+                    case "7":
                         {
-                            pagination.GetVisibleItems();
+                            pagination.SortDesc();
                             break;
                         }
                     default:

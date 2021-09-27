@@ -1,12 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
-using System;
 
 namespace Assessment
 {
     public class PaginationString : IPagination<string>
     {
-        private readonly IEnumerable<string> data;
+        private IEnumerable<string> data;
         private readonly int pageSize;
         private int currentPage;
 
@@ -16,12 +15,20 @@ namespace Assessment
             currentPage = 1;
             this.pageSize = pageSize;
         }
-        public void FirstPage()
+        public PaginationString(List<int> source, int pageSize, IElementsProvider<string> provider)
+        {
+            string newSource = string.Join(",", source.ToArray());
+            data = provider.ProcessData(newSource);
+            currentPage = 1;
+            this.pageSize = pageSize;
+        }
+        public IPagination<string> FirstPage()
         {
             currentPage = 1;
+            return this;
         }
 
-        public void GoToPage(int page)
+        public IPagination<string> GoToPage(int page)
         {
             if(page <= 0 || page > Pages())
             {
@@ -31,14 +38,16 @@ namespace Assessment
             {
                 currentPage = page;
             }
+            return this;
         }
 
-        public void LastPage()
+        public IPagination<string> LastPage()
         {
             currentPage = Pages();
+            return this;
         }
 
-        public void NextPage()
+        public IPagination<string> NextPage()
         {
             if (currentPage == Pages())
             {
@@ -48,9 +57,10 @@ namespace Assessment
             {
                 currentPage++;
             }
+            return this;
         }
 
-        public void PrevPage()
+        public IPagination<string> PrevPage()
         {
             if(currentPage == 1)
             {
@@ -60,6 +70,7 @@ namespace Assessment
             {
                 currentPage--;
             }
+            return this;
         }
 
         public IEnumerable<string> GetVisibleItems()
@@ -80,6 +91,14 @@ namespace Assessment
                 numberOfPages++;
             }
             return numberOfPages;
+        }
+        public void SortAsc()
+        {
+            data = data.OrderBy(s => s);
+        }
+        public void SortDesc()
+        {
+            data = data.OrderByDescending(s => s);
         }
     }
 }
