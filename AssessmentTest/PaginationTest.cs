@@ -34,7 +34,12 @@ namespace AssessmentTest
         [TestMethod]
         public void TestPreviousPage()
         {
-            
+            IElementsProvider<string> provider = new StringProvider();
+            IPagination<string> pagination = new PaginationString(COMMA_SAMPLE, 5, provider);
+            pagination.LastPage();
+            pagination.PrevPage();
+            string[] expectedElements = { "u", "v", "w", "x", "y"  };
+            CollectionAssert.AreEqual(expectedElements, pagination.GetVisibleItems().ToList());
         }
 
         [TestMethod]
@@ -43,7 +48,7 @@ namespace AssessmentTest
             IElementsProvider<string> provider = new StringProvider();
             IPagination<string> pagination = new PaginationString(COMMA_SAMPLE, 5, provider);
             pagination.LastPage();
-            string [] expectedElements = {"v", "w", "x", "y", "z"};
+            string [] expectedElements = {"z"};
             CollectionAssert.AreEqual(expectedElements, pagination.GetVisibleItems().ToList());
         }
 
@@ -60,17 +65,27 @@ namespace AssessmentTest
         [TestMethod]
         public void TestLastPageWith10PageSize()
         {
+            IElementsProvider<string> provider = new StringProvider();
+            IPagination<string> pagination = new PaginationString(COMMA_SAMPLE, 10, provider);
+            pagination.LastPage();
+            string[] expectedElements = { "u", "v", "w", "x", "y", "z" };
+            CollectionAssert.AreEqual(expectedElements, pagination.GetVisibleItems().ToList());
         }
 
         [TestMethod]
         public void TestGoToPageWith10PageSize()
         {
+            IElementsProvider<string> provider = new StringProvider();
+            IPagination<string> pagination = new PaginationString(COMMA_SAMPLE, 10, provider);
+            pagination.GoToPage(2);
+            string[] expectedElements = { "k", "l", "m", "n", "o", "p", "q", "r", "s", "t" };
+            CollectionAssert.AreEqual(expectedElements, pagination.GetVisibleItems().ToList());
         }
 
          [TestMethod]
         public void TestFirstPageWithPipeSample()
         {
-            IElementsProvider<string> provider = new StringProvider();
+            IElementsProvider<string> provider = new StringProvider("|");
             IPagination<string> pagination = new PaginationString(PIPE_SAMPLE, 5, provider);
             pagination.FirstPage();
             string [] expectedElements = {"a", "b", "c", "d", "e"};

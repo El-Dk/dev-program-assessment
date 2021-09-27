@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System;
 
 namespace Assessment
 {
@@ -22,37 +23,63 @@ namespace Assessment
 
         public void GoToPage(int page)
         {
-            throw new System.NotImplementedException();
+            if(page <= 0 || page > Pages())
+            {
+                throw new System.InvalidOperationException();
+            }
+            else
+            {
+                currentPage = page;
+            }
         }
 
         public void LastPage()
         {
-            throw new System.NotImplementedException();
+            currentPage = Pages();
         }
 
         public void NextPage()
         {
-            
+            if (currentPage == Pages())
+            {
+                throw new System.InvalidOperationException();
+            }
+            else
+            {
+                currentPage++;
+            }
         }
 
         public void PrevPage()
         {
-            throw new System.NotImplementedException();
+            if(currentPage == 1)
+            {
+                throw new System.InvalidOperationException();
+            }
+            else
+            {
+                currentPage--;
+            }
         }
 
         public IEnumerable<string> GetVisibleItems()
         {
-            return data.Skip(currentPage*pageSize).Take(5);
+            return data.Skip((currentPage - 1) * pageSize).Take(pageSize);
         }
 
         public int CurrentPage()
         {
-            throw new System.NotImplementedException();
+            return currentPage;
         }
 
         public int Pages()
         {
-            throw new System.NotImplementedException();
+            int numberOfPages = data.Count() / pageSize;
+            if (data.Count() % pageSize != 0)
+            {
+                numberOfPages++;
+            }
+            return numberOfPages;
         }
     }
 }
